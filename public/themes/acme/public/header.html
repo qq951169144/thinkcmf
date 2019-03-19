@@ -6,146 +6,32 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="__ROOT__">A<span>cme</span></a>
+            <php>
+                $title = explode("|", $theme_vars['site_name']);
+            </php>
+            <if condition="empty($theme_vars['logo'])">
+                <a class="navbar-brand" href="__ROOT__">{$title[0]}<span>{$title[1]}</span></a>
+            <else/>
+                <img src="{$theme_vars['logo']|cmf_get_image_url}" style="max-height: 60px;">
+            </if>
         </div>
         <div class="navbar-collapse collapse">
+            <!--navigation系列标签必须所有父节点和子节点的样式保持一致-->
             <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover=
-                            "dropdown" data-toggle="dropdown" href="__ROOT__">首页
-                    </a>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover=
-                            "dropdown" data-toggle="dropdown" href="#">Feature <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="typography.html">Typography</a>
-                        </li>
-                        <li>
-                            <a href="button.html">Buttons</a>
-                        </li>
-                        <li>
-                            <a href="form.html">Form</a>
-                        </li>
-                        <li>
-                            <a href="table.html">Table</a>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a href="#" tabindex="-1">More options</a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#" tabindex="-1">Second level</a>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a href="#">Even More..</a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="#">3rd level</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">3rd level</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Second level</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second level</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover=
-                            "dropdown" data-toggle="dropdown" href="#">Pages <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="about.html">About</a>
-                        </li>
-                        <li>
-                            <a href="404.html">404 page</a>
-                        </li>
-                        <li>
-                            <a href="career.html">career</a>
-                        </li>
-                        <li>
-                            <a href="login.html">Login</a>
-                        </li>
-                        <li>
-                            <a href="registration.html">Registration</a>
-                        </li>
-                        <li>
-                            <a href="faq.html">FAQ</a>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a href="#" tabindex="-1">Pricing table</a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-submenu"></li>
-                                <li>
-                                    <a href="price-table-one.html">Pricing table one</a>
-                                </li>
-                                <li>
-                                    <a href="price-table-two.html">Pricing table two</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="service.html">Service</a>
-                        </li>
-                        <li>
-                            <a href="terms.html">Terms & Condition</a>
-                        </li>
-                        <li>
-                            <a href="privacy.html">Privacy policy</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover=
-                            "dropdown" data-toggle="dropdown" href="#">Portfolio <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="portfolio-3-col.html">Portfolio 3 column</a>
-                        </li>
-                        <li>
-                            <a href="portfolio-4-col.html">Portfolio 4 column</a>
-                        </li>
-                        <li>
-                            <a href="portfolio-single-image.html">Portfolio Single Image</a>
-                        </li>
-                        <li>
-                            <a href="portfolio-single-video.html">Portfolio Single Video</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover=
-                            "dropdown" data-toggle="dropdown" href="#">Blog <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="blog.html">Blog</a>
-                        </li>
-                        <li>
-                            <a href="blog-two-col.html">Blog two column</a>
-                        </li>
-                        <li>
-                            <a href="blog-detail.html">Blog Single Image</a>
-                        </li>
-                        <li>
-                            <a href="blog-detail-video.html">Blog single video</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="contact.html">Contact</a>
-                </li>
+                <navigation nav-id="1" root="">
+                    <navigationMenu root="li" class="dropdown">
+                        <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover=
+                                "dropdown" data-toggle="dropdown" href="{$menu.href|default=''}" target="{$menu.target|default=''}">{$menu.name|default=''}
+                        </a>
+                    </navigationMenu>
+                    <navigationFolder root="li" dropdown="ul" dropdown-class="dropdown-menu">
+                        <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover=
+                                "dropdown" data-toggle="dropdown" href="{$menu.href|default=''}">
+                            {$menu.name|default=''}
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                    </navigationFolder>
+                </navigation>
                 <li><input class="form-control search" placeholder=" Search" type="text"></li>
             </ul>
         </div>
