@@ -1,4 +1,58 @@
 <extend name="public@base" />
+<block name="head">
+    {__block__}
+    <link rel="stylesheet" href="__TMPL__/public/assets/owlcarousel/owl.carousel.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/owlcarousel/owl.theme.css">
+    <link href="__TMPL__/public/assets/css/superfish.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/component.css">
+    <link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/parallax-slider/parallax-slider.css" />
+    <script type="text/javascript" src="__TMPL__/public/assets/js/parallax-slider/modernizr.custom.28468.js"></script>
+</block>
 <block name="body">
-    红红火火
+    <--幻灯片写在这里-->
+</block>
+<block name="scripts">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/jquery.parallax-1.1.3.js"></script>
+    <script src="__TMPL__/public/assets/owlcarousel/owl.carousel.js"></script>
+    <script src="__TMPL__/public/assets/js/superfish.js"></script>
+    <script type="text/javascript" src="__TMPL__/public/assets/js/parallax-slider/jquery.cslider.js"></script>
+    {__block__}
+    <script type="application/javascript">
+        $(function() {
+            $('#da-slider').cslider({
+                autoplay    : true,
+                bgincrement : 100
+            });
+
+            $('.bxslider1').bxSlider({
+                minSlides: 5,
+                maxSlides: 6,
+                slideWidth: 360,
+                slideMargin: 2,
+                moveSlides: 1,
+                responsive: true,
+                nextSelector: '#slider-next',
+                prevSelector: '#slider-prev',
+                nextText: 'Onward →',
+                prevText: '← Go back'
+            });
+
+            $("#owl-demo").owlCarousel({
+                items : 4
+            });
+
+            jQuery('ul.superfish').superfish();
+        });
+        $('a.info').tooltip();
+
+        $(window).load(function() {
+            $('.flexslider').flexslider({
+                animation: "slide",
+                start: function(slider) {
+                    $('body').removeClass('loading');
+                }
+            });
+        });
+        new WOW().init();
+    </script>
 </block>
