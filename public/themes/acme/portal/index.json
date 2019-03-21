@@ -1,0 +1,26 @@
+{
+  "name": "首页",
+  "action": "portal/index/index",
+  "description": "首页",
+  "order": 1,
+  "more": {
+    "vars": {
+      "slider": {
+        "title": "幻灯片",
+        "value": "1",
+        "type": "text",
+        "tip": "请选择幻灯片",
+        "dataSource":{
+          "api": "admin/Slide/index",
+          "multi": true
+        },
+        "rule": {
+          "require": true
+        },
+        "message":{
+          "require":"不能为空"
+        }
+      }
+    }
+  }
+}
