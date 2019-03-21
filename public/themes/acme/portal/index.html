@@ -9,7 +9,7 @@
     <script type="text/javascript" src="__TMPL__/public/assets/js/parallax-slider/modernizr.custom.28468.js"></script>
 </block>
 <block name="body">
-    <!-- Sequence Modern Slider -->
+    <!-- 幻灯片 -->
     <div id="da-slider" class="da-slider">
         <slides id="1">
             <php>
@@ -21,6 +21,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h2>
+                                <!--volist标签循环的时候，key值是从1开始，详见源码++$key-->
                                 <volist name="titles" id="v">
                                     <if condition="$i eq count($titles)">
                                         <i>{$v}</i>
