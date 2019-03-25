@@ -12,13 +12,37 @@
         "tip": "请选择幻灯片",
         "dataSource":{
           "api": "admin/Slide/index",
-          "multi": true
+          "multi": false
         },
         "rule": {
           "require": true
         },
         "message":{
           "require":"不能为空"
+        }
+      }
+    },
+    "widgets": {
+      "first_section": {
+        "title": "优势所在",
+        "display": "1",
+        "vars": {
+          "category": {
+            "title": "文章分类",
+            "value": "",
+            "type": "text",
+            "tip": "请选择文章分类",
+            "dataSource":{
+              "api": "portal/Category/index",
+              "multi": false
+            },
+            "rule": {
+              "require": true
+            },
+            "message":{
+              "require":"不能为空"
+            }
+          }
         }
       }
     }

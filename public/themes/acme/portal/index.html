@@ -57,30 +57,32 @@
             <li>你还没有创建幻灯片;</li>
         </noslides>
     </div>
-    <div class="container">
-        <div class="row mar-b-50">
-            <div class="col-md-12">
-                <div class="text-center feature-head wow fadeInDown">
-                    <h1 class="">welcome to Acme</h1>
-                </div>
-                <div class="feature-box">
-                    <portal:articles limit="3" order="id" ategoryIds="1">
-                        <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
-                            <div class="feature-box-heading">
-                                <em>
-                                    <img src="{$vo.thumbnail|cmf_get_image_url}" alt="" width="100" height="100">
-                                </em>
-                                <h4>
-                                    <b>{$vo.post_title}</b>
-                                </h4>
+    <widget name="first_section">
+        <div class="container">
+            <div class="row mar-b-50">
+                <div class="col-md-12">
+                    <div class="text-center feature-head wow fadeInDown">
+                        <h1 class="">{$widget.title}</h1>
+                    </div>
+                    <div class="feature-box">
+                        <portal:articles limit="3" order="id" categoryIds="$widget.vars.category">
+                            <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
+                                <div class="feature-box-heading">
+                                    <em>
+                                        <img src="{$vo.thumbnail|cmf_get_image_url}" alt="" width="100" height="100">
+                                    </em>
+                                    <h4>
+                                        <b>{$vo.post_title}</b>
+                                    </h4>
+                                </div>
+                                <p class="text-center">{$vo.post_excerpt}</p>
                             </div>
-                            <p class="text-center">{$vo.post_excerpt}</p>
-                        </div>
-                    </portal:articles>
+                        </portal:articles>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </widget>
 </block>
 <block name="scripts">
     <script type="text/javascript" src="__TMPL__/public/assets/js/jquery.parallax-1.1.3.js"></script>
