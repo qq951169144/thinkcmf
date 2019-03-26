@@ -131,11 +131,7 @@ class SettingController extends AdminBaseController
             $routeModel->getRoutes(true);
 
             if (!empty($adminSettings['admin_theme'])) {
-                $result = cmf_set_dynamic_config([
-                    'template' => [
-                        'cmf_admin_default_theme' => $adminSettings['admin_theme']
-                    ]
-                ]);
+                $result = cmf_set_dynamic_config(['cmf_admin_default_theme' => $adminSettings['admin_theme']]);
 
                 if ($result === false) {
                     $this->error('配置写入失败!');

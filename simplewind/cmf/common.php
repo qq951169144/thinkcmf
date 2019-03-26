@@ -363,19 +363,19 @@ function cmf_save_var($path, $var)
  */
 function cmf_set_dynamic_config($data)
 {
-
     if (!is_array($data)) {
         return false;
     }
-
     $configFile = CMF_ROOT . "data/conf/config.php";
     if (file_exists($configFile)) {
         $configs = include $configFile;
     } else {
-        $configs = [];
+        $configs['template'] = [];
     }
-
-    $configs = array_merge($configs, $data);
+    foreach ($data as $key=>$value){
+        $configs['template'][$key] = $value;
+    }
+//    $configs = array_merge($configs['template'], $data); // 这样子写100%出bug
     $result  = file_put_contents($configFile, "<?php\treturn " . var_export($configs, true) . ";");
 
     cmf_clear_cache();
