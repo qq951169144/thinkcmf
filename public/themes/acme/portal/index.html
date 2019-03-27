@@ -57,6 +57,7 @@
             <li>你还没有创建幻灯片;</li>
         </noslides>
     </div>
+    <!--第一个section-->
     <widget name="first_section">
         <div class="container">
             <div class="row mar-b-50">
@@ -79,6 +80,105 @@
                             </div>
                         </portal:articles>
                     </div>
+                </div>
+            </div>
+        </div>
+    </widget>
+    <!--第二个section-->
+    <widget name="second_section">
+        <div class="property gray-bg">
+            <php>
+                $service = new app\portal\service\ApiService();
+                $page = $service->page($widget['vars']['category']);
+            </php>
+            <if condition="!empty($page)">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 text-center wow fadeInLeft">
+                            <img src="{$page.more.thumbnail|cmf_get_image_url}" alt="" width="400" height="520">
+                        </div>
+                        <div class="col-lg-6 col-sm-6 wow fadeInRight">
+                            <h1>{$page.post_title}</h1>
+                            <hr>
+                            <p>{$page.post_content}</p>
+                            <hr>
+                            <a href="#" class="btn btn-purchase">阅读详情</a>
+                        </div>
+                    </div>
+                </div>
+            </if>
+        </div>
+    </widget>
+    <!--第三个section-->
+    <widget name="third_section">
+        <div class="container">
+            <div class="row mar-b-60">
+                <div class="col-lg-6">
+                    <!--tab start-->
+                    <section class="tab wow fadeInLeft">
+                        <header class="panel-heading tab-bg-dark-navy-blue">
+                            <ul class="nav nav-tabs nav-justified ">
+                                <volist name="$widget['vars']['new']" id="vo">
+                                    <php>
+                                        $active = $i==1? 'active': '';
+                                    </php>
+                                    <li class="{$active}">
+                                        <a data-toggle="tab" href="#news_{$vo.category_id}">
+                                            {$vo.category_id_text_}
+                                        </a>
+                                    </li>
+                                </volist>
+                            </ul>
+                        </header>
+                        <div class="panel-body">
+                            <div class="tab-content tasi-tab">
+                                <volist name="$widget['vars']['new']" id="vo" key="k">
+                                    <php>
+                                        $class_name = ($k==1)? 'tab-pane fade in active': 'tab-pane fade';
+                                    </php>
+                                    <div id="news_{$vo.category_id}" class="{$class_name}">
+                                        <portal:articles item="v" limit="$vo.count" order="id" categoryIds="$vo.category_id">
+                                            <if condition="$k neq 3">
+                                                <article class="media">
+                                                    <div class="media-body b-btm">
+                                                        <a href="{$v.post_source}" class=" p-head">{$v.post_title}</a>
+                                                        <p>{$v.post_excerpt}</p>
+                                                    </div>
+                                                </article>
+                                            <else/>
+                                                {$v.post_content}
+                                            </if>
+                                        </portal:articles>
+                                    </div>
+                                </volist>
+                            </div>
+                        </div>
+                    </section>
+                    <!--tab end-->
+                </div>
+                <div class="col-lg-6">
+                    <!--testimonial start-->
+                    <div class="about-testimonial boxed-style about-flexslider ">
+                        <section class="slider wow fadeInRight">
+                            <div class="flexslider">
+                                <ul class="slides about-flex-slides">
+                                    <portal:articles order="id" categoryIds="$widget.vars.slide">
+                                        <li>
+                                            <div class="about-testimonial-image ">
+                                                <img alt="" src="{$vo.thumbnail|cmf_get_image_url}" width="100" height="100">
+                                            </div>
+                                            <a class="about-testimonial-author" href="#">{$vo.post_title}</a>
+                                            <span class="about-testimonial-company">{$vo.post_excerpt}</span>
+                                            <div class="about-testimonial-content">
+                                                <p class="about-testimonial-quote">{$vo.post_content}</p>
+                                            </div>
+                                        </li>
+                                    </portal:articles>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                    <!--testimonial end-->
                 </div>
             </div>
         </div>

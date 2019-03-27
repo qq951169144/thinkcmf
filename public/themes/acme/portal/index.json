@@ -44,6 +44,79 @@
             }
           }
         }
+      },
+      "second_section":{
+        "title": "单页面",
+        "display": "1",
+        "vars": {
+          "category": {
+            "title": "单页面",
+            "value": "",
+            "type": "text",
+            "tip": "单页面",
+            "dataSource":{
+              "api": "portal/Page/index",
+              "multi": false
+            },
+            "rule": {
+              "require": true
+            },
+            "message":{
+              "require":"不能为空"
+            }
+          }
+        }
+      },
+      "third_section":{
+        "title": "复杂文章分类",
+        "display": "1",
+        "vars": {
+          "new":{
+            "title": "文章分类",
+            "value": [],
+            "type": "array",
+            "item": {
+              "category_id": {
+                "title": "分类id",
+                "value": "",
+                "type": "text",
+                "tip": "请选择文章分类",
+                "dataSource":{
+                  "api": "portal/Category/index",
+                  "multi": false
+                },
+                "rule": {
+                  "require": true
+                },
+                "message":{
+                  "require":"不能为空"
+                }
+              },
+              "count": {
+                "title": "文章显示数量",
+                "value": "",
+                "type": "number",
+                "tip": "请选择文章显示数量"
+              }
+            }
+          },
+          "slide": {
+            "title": "团队展示",
+            "value": "",
+            "type": "text",
+            "tip": "请选择团队分类",
+            "dataSource":{
+              "api": "portal/Category/index",
+              "multi": false
+            },
+            "rule": {
+              "require": true
+            },
+            "message":{
+              "require":"不能为空"
+            }
+          }
+        }
       }
     }
   }
