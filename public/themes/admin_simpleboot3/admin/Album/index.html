@@ -1,9 +1,4 @@
 <include file="public@header"/>
-<style>
-    .img-margin{
-        margin-top: 5px;
-    }
-</style>
 <script type="text/html" id="photos-item-tpl">
     <li id="saved-image{id}" class="img-margin">
         <input id="photo-{id}" type="hidden" name="photo_urls[]" value="{filepath}">
@@ -16,23 +11,94 @@
     </li>
 </script>
 </head>
+</head>
 <body>
-    <div class="wrap js-check-wrap">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="javascript:;">相册列表</a></li>
-            <li><a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');">添加相册</a></li>
-        </ul>
-        <br/>
-        <form method="post" class="form-horizontal js-ajax-form margin-top-20">
-            <ul id="photos" class="pic-list list-unstyled form-inline"></ul>
-        </form>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#">资源列表</a></li>
+        <li><a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl', {}, '', true);">添加资源</a></li>
+    </ul>
+    <ul id="photos" class="pic-list list-unstyled form-inline" style="display: none;"></ul>
+    <php>$status=['不可用', '可用'];</php>
+    <div class="table-actions" style="margin-top: 10px;">
+        <button class="btn btn-primary btn-sm" type="button" onclick="sub('add');">选择为相册</button>
+        <button class="btn btn-primary btn-sm" type="button" onclick="sub('del');">删除</button>
     </div>
-    <script type="text/javascript" src="__STATIC__/js/admin.js"></script>
-    <script type="text/javascript">
-        //编辑器路径定义
-        var editorURL = GV.WEB_ROOT;
-    </script>
-    <script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+    <table class="table table-hover table-bordered margin-top-20">
+        <thead>
+        <tr>
+            <th width="50">
+                <label>
+                    <input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">
+                </label>
+            </th>
+            <th width="50">ID</th>
+            <th>文件名</th>
+            <th>图像</th>
+            <th>文件路径</th>
+            <th>状态</th>
+            <th width="160">{:lang('ACTIONS')}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <php>
+            $asset_img_suffixes=['bmp','jpg','jpeg','png','gif','tiff'];/*TODO ADD MORE*/
+        </php>
+        <foreach name="assets" item="vo">
+            <tr>
+                <td><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$vo.id}" title="ID:{$vo.id}"></td>
+                <td>{$vo.id}</td>
+                <td>{$vo.filename}</td>
+                <td>
+                    <if condition="in_array(strtolower($vo['suffix']),$asset_img_suffixes)">
+                        <img src="{$vo.file_path|cmf_get_image_url}" width="50" height="50"/>
+                    </if>
+                </td>
+                <td>
+                    {$vo.file_path}
+                    <if condition="!file_exists('upload/'.$vo['file_path'])">
+                        <span style='color:red;'>&nbsp;&nbsp(文件丢失)</span>
+                    </if>
+                </td>
+                <td>{$status[$vo['status']]}</td>
+                <td>
+                    <eq name="$vo['al_status']" value="1">
+                        选为相册
+                        <else/>
+                        不选为相册
+                    </eq>
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+    <div class="pagination">{$page|default=''}</div>
+
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+<script>
+    var editorURL = GV.WEB_ROOT;
+    function sub(type) {
+        var data = [];
+        $.each($(":checkbox"), function (index, item) {
+            if($(item).hasClass('js-check')){
+                if(item.checked){
+                    data.push($(item).val());
+                }
+            }
+        });
+        if(type == 'add'){
+            var url = "{:url('admin/Album/doadd')}";
+        }else if(type == 'del'){
+            var url = "{:url('admin/Album/dodel')}";
+        }
+        $.post(url, {ids: data}, function (res) {
+            alert(res.msg);
+            window.location.reload();
+        });
+    }
+</script>
 </body>
 </html>

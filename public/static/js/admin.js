@@ -933,7 +933,7 @@ function uploadOneImage(dialog_title, input_selector, extra_params, app) {
  * @param extra_params 额外参数，object
  * @param app  应用名,CMF 的应用名
  */
-function uploadMultiImage(dialog_title, container_selector, item_tpl_wrapper_id, extra_params, app) {
+function uploadMultiImage(dialog_title, container_selector, item_tpl_wrapper_id, extra_params, app, is_reload) {
     openUploadDialog(dialog_title, function (dialog, files) {
         var tpl  = $('#' + item_tpl_wrapper_id).html();
         var html = '';
@@ -947,7 +947,9 @@ function uploadMultiImage(dialog_title, container_selector, item_tpl_wrapper_id,
             html += itemtpl;
         });
         $(container_selector).append(html);
-
+        if( (!!is_reload) && (is_reload == true) ){
+            window.location.reload();
+        }
     }, extra_params, 1, 'image', app);
 }
 
