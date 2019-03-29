@@ -117,6 +117,27 @@
             }
           }
         }
+      },
+      "fourth_section":{
+        "title": "获取相册资源",
+        "display": "1",
+        "vars": {
+          "album":{
+            "title": "获取相册资源",
+            "value": "",
+            "type": "text",
+            "dataSource":{
+              "api": "admin/Album/index",
+              "multi": true
+            },
+            "rule": {
+              "require": true
+            },
+            "message":{
+              "require":"不能为空"
+            }
+          }
+        }
       }
     }
   }
