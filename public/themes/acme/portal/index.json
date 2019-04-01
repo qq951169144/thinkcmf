@@ -119,12 +119,12 @@
         }
       },
       "fourth_section":{
-        "title": "获取相册资源",
+        "title": "相册",
         "display": "1",
         "vars": {
-          "album":{
-            "title": "获取相册资源",
-            "value": "获取相册资源",
+          "desc":{
+            "title": "相册简介",
+            "value": "这是最近的相册",
             "type": "text"
           }
         }

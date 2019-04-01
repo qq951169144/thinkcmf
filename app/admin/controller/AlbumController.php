@@ -24,7 +24,7 @@ class AlbumController extends AdminBaseController {
             ['__USER__ u', 'a.user_id = u.id'],
             ['__ALBUM__ al', 'a.id = al.asset_id', 'left']
         ];
-        $result = Db::name('asset')->field('a.*,u.user_login,u.user_email,u.user_nickname, al.status as al_status')
+        $result = Db::name('asset')->field('a.*,al.id as alid,u.user_login,u.user_email,u.user_nickname, al.status as al_status')
             ->alias('a')->join($join)
             ->order('id')
             ->paginate(10);
@@ -59,6 +59,7 @@ class AlbumController extends AdminBaseController {
     }
 
     public function dodel(){
+        // 换成硬删除
         $params = input();
         $ids = '';
         foreach ($params['ids'] as $key=>$value){
@@ -69,7 +70,7 @@ class AlbumController extends AdminBaseController {
             }
         }
         $map = ['asset_id'=> ['in', $ids], 'status'=>1];
-        $res = db('Album')->where($map)->update(['status'=>0, 'delete_time'=>time()]);
+        $res = db('Album')->where($map)->delete();
         if(!empty($res)){
             $this->success('删除成功');
         }else{
