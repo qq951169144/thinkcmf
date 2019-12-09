@@ -1,0 +1,134 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('index')}">列表</a></li>
+        <li class="active"><a href="{:url('addview')}">新增</a></li>
+    </ul>
+
+    <form class="form-horizontal js-ajax-form margin-top-20" id="formdata">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">名称</label>
+            <div class="col-sm-2 control-label">
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">属性</label>
+            <div class="col-sm-2 control-label">
+                <input type="text" class="form-control" id="attributes" name="attributes">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">种族</label>
+            <div class="col-sm-2 control-label">
+                <select class="form-control" name="race" id="race">
+                    <option value="1">资料</option>
+                    <option value="2">病毒</option>
+                    <option value="3">疫苗</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">世代</label>
+            <div class="col-sm-2 control-label">
+                <select class="form-control" name="generations" id="generations" onchange="getList(this.options[this.options.selectedIndex].value)">
+                    <option value="0" selected>选择时期</option>
+                    <option value="1">幼年1</option>
+                    <option value="2">幼年2</option>
+                    <option value="3">成长期</option>
+                    <option value="4">成熟期</option>
+                    <option value="5">完全体</option>
+                    <option value="6">究极体</option>
+                    <option value="7">超究极体</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">进化列表</label>
+            <div class="row evolution_list">
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">图片</label>
+            <div class="col-sm-2">
+                <input type="hidden" name="img" id="thumbnail" value="">
+                <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                    <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                         id="thumbnail-preview"
+                         width="135" style="cursor: pointer"/>
+                </a>
+                <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片" onclick="cancelThumbnail()">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" onclick="add();">添加</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="application/javascript">
+
+    function cancelThumbnail() {
+        $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+        $('#thumbnail').val('');
+    }
+
+    function serializeArray2postdata(serialize_array) {
+        var postdata = {};
+        $.map(serialize_array, function (item, index) {
+            postdata[item.name] = item.value;
+        });
+        return postdata;
+    }
+    function add() {
+        var serialize_array = $("#formdata").serializeArray();
+        var postdata = serializeArray2postdata(serialize_array);
+
+        postdata.evolution_ids = new Array();
+
+        $(".evolution_list input[type=checkbox]:checked").each(function (item, index) {
+            postdata.evolution_ids.push({});
+        });
+
+        $.post("{:url('add')}", postdata, function (res) {
+            if(res.code == 1){
+                console.log('添加成功');
+                window.location.href = "{:url('index')}";
+            }else {
+                console.log('添加失败');
+            }
+        }, 'json')
+    }
+
+    function getList(value) {
+        if(value == 0){
+            return false;
+        }
+        $(".evolution_list").empty();
+        $.post("{:url('getList')}", {generations: value}, function (res) {
+            if (res.code == 1){
+                console.log(res);
+                $(".evolution_list").append(res.data);
+            }else{
+                console.log('获取失败');
+            }
+        })
+    }
+
+</script>
+
+</body>
+</html>

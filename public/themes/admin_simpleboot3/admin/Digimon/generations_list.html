@@ -1,0 +1,12 @@
+<volist name="list" id="vo">
+    <div class="col-sm-1 col-md-1">
+        <div class="thumbnail">
+            <img src="{$vo.img|cmf_get_image_url}">
+            <div class="caption">
+                <strong>{$vo.name}</strong>
+                <input type="checkbox" value="{$vo.id}" style="float: right"/>
+            </div>
+        </div>
+    </div>
+</volist>
+
