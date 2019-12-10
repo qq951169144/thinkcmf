@@ -1,14 +1,70 @@
 <include file="public@header"/>
+<style type="text/css">
+    .listdiv{
+        padding-top: 40px; margin-left: 25px;
+    }
+    .mr-l-25{
+        margin-left: 25px;
+    }
+</style>
 </head>
 <body>
-    <div class="wrap js-check-wrap">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="{:url('index')}">列表</a></li>
-            <li><a href="{:url('addview')}">新增</a></li>
-        </ul>
-    </div>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('index')}">列表</a></li>
+        <li><a href="{:url('addview')}">新增</a></li>
+    </ul>
+</div>
 
-    <button type="button" class="btn btn-info mar-">（一般信息）Info</button>
+<div class="row mr-l-25">
+    <div class="col-xs-6 col-md-1">
+        <button type="button" class="btn btn-info" onclick="index_list(1);">幼年1</button>
+    </div>
+    <div class="col-xs-6 col-md-1">
+        <button type="button" class="btn btn-info" onclick="index_list(2);">幼年2</button>
+    </div>
+    <div class="col-xs-6 col-md-1">
+        <button type="button" class="btn btn-info" onclick="index_list(3);">成长期</button>
+    </div>
+    <div class="col-xs-6 col-md-1">
+        <button type="button" class="btn btn-info" onclick="index_list(4);">成熟期</button>
+    </div>
+    <div class="col-xs-6 col-md-1">
+        <button type="button" class="btn btn-info" onclick="index_list(5);">完全体</button>
+    </div>
+    <div class="col-xs-6 col-md-1">
+        <button type="button" class="btn btn-info" onclick="index_list(6);">究极体</button>
+    </div>
+    <div class="col-xs-6 col-md-1">
+        <button type="button" class="btn btn-info" onclick="index_list(7);">超究极体</button>
+    </div>
+</div>
+
+<div class="row listdiv">
+    <volist name="list" id="vo">
+        <div class="col-sm-1 col-md-1">
+            <div class="thumbnail">
+                <img src="{$vo.img|cmf_get_image_url}" style="height: 100px;width: 100px;">
+                <div class="caption">
+                    <strong>{$vo.name}</strong>
+                </div>
+            </div>
+        </div>
+    </volist>
+</div>
+
+<script type="application/javascript">
+    function index_list(generations) {
+        $.post("{:url('index_list')}", {generations:generations}, function (res) {
+            if(res.code == 1){
+                $(".listdiv").empty();
+                $(".listdiv").append(res.data);
+            }else{
+                console.log('获取失败');
+            }
+        });
+    }
+</script>
 
 </body>
 </html>

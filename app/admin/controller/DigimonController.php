@@ -16,8 +16,21 @@ class DigimonController extends AdminBaseController{
     public function index(){
         $list = $this->digimon->order('generations')->select();
         $this->assign('list', $list);
-        // var_dump($list);exit();
         return $this->fetch();
+    }
+
+    public function index_list(){
+        $generations = input('generations');
+        if(!empty($generations)){
+            $map = ['generations'=>$generations];
+            $list = $this->digimon->where($map)->order('generations')->select();
+        }else{
+            $list = $this->digimon->order('generations')->select();
+        }
+
+        $this->assign('list', $list);
+        $str = $this->fetch('index_list');
+        return $this->success('获取成功', '', $str);
     }
 
     public function addview(){
