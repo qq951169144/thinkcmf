@@ -58,6 +58,13 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm-2 control-label">退化列表</label>
+            <div class="row degenerate_list">
+
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-sm-2 control-label">图片</label>
             <div class="col-sm-2">
                 <input type="hidden" name="img" id="thumbnail" value="">
@@ -98,9 +105,14 @@
         var postdata = serializeArray2postdata(serialize_array);
 
         postdata.evolution_ids = new Array();
+        postdata.degenerate_ids = new Array();
 
-        $(".evolution_list input[type=checkbox]:checked").each(function (item, index) {
-            postdata.evolution_ids.push({});
+        $(".evolution_list input[type=checkbox]:checked").each(function (index, item) {
+            postdata.evolution_ids.push(item.value);
+        });
+
+        $(".degenerate_list input[type=checkbox]:checked").each(function (index, item) {
+            postdata.degenerate_ids.push(item.value);
         });
 
         $.post("{:url('add')}", postdata, function (res) {
@@ -118,10 +130,12 @@
             return false;
         }
         $(".evolution_list").empty();
+        $(".degenerate_list").empty();
         $.post("{:url('getList')}", {generations: value}, function (res) {
             if (res.code == 1){
-                console.log(res);
-                $(".evolution_list").append(res.data);
+
+                $(".evolution_list").append(res.data.evolution);
+                $(".degenerate_list").append(res.data.degenerate);
             }else{
                 console.log('获取失败');
             }
