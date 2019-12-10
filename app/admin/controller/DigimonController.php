@@ -8,7 +8,7 @@ class DigimonController extends AdminBaseController{
 
     public function initialize()
     {
-        // TODO: 以及列表, 以及编辑状态
+        // TODO: 以及编辑状态
         parent::initialize();
         $this->digimon = model('Digimon');
     }
@@ -43,19 +43,63 @@ class DigimonController extends AdminBaseController{
         $arr = ['evolution', 'degenerate'];
 
         foreach ($arr as $key=>$value){
-            $data["{$value}_list"] = [];
-            foreach ($data["{$value}_ids"] as $k=>$v){
-                $name = $this->digimon->where(['id'=>$v])->value('name');
-                $data["{$value}_list"][] = ['id'=>$v, 'name'=>$name];
+            if(!empty($data["{$value}_ids"])){
+                $data["{$value}_list"] = [];
+                foreach ($data["{$value}_ids"] as $k=>$v){
+                    $name = $this->digimon->where(['id'=>$v])->value('name');
+                    $data["{$value}_list"][] = ['id'=>$v, 'name'=>$name];
+                }
+                $data["{$value}_ids"] = implode(",", $data["{$value}_ids"]);
+                $data["{$value}_list"] = json_encode($data["{$value}_list"], JSON_UNESCAPED_UNICODE);
             }
-            $data["{$value}_ids"] = implode(",", $data["{$value}_ids"]);
-            $data["{$value}_list"] = json_encode($data["{$value}_list"], JSON_UNESCAPED_UNICODE);
+        }
+        $res = model('Digimon')->insertGetId($data);
+        // 进化变退化
+        if(!empty($data['evolution_ids'])){
+            $data['evolution_list'] = json_decode($data['evolution_list'], true);
+            foreach ($data['evolution_list'] as $key=>$value){
+                $degenerate = model('Digimon')->where(['id'=>$value['id']])->field('degenerate_list, degenerate_ids')->find()->toArray();
+
+                $degenerate['degenerate_list'] = json_decode($degenerate['degenerate_list'], true);
+                $degenerate['degenerate_list'][] = ['id'=>$res, 'name'=>$data['name']];
+                $degenerate['degenerate_list'] = json_encode($degenerate['degenerate_list'],JSON_UNESCAPED_UNICODE);
+
+                if(!empty($degenerate['degenerate_ids'])){
+                    $degenerate['degenerate_ids'] = explode(",", $degenerate['degenerate_ids']);
+                }
+                $degenerate['degenerate_ids'][] = $res;
+                $degenerate['degenerate_ids'] = implode(",", $degenerate['degenerate_ids']);
+
+                model('Digimon')->save($degenerate, ['id'=>$value['id']]);
+            }
         }
 
-        $res = $this->digimon->insert($data);
-        // TODO: 这里不能只单纯针对当前数据进行操作，还要对涉及到进化和退化的数据进行操作
+        // 退化变进化
+        if(!empty($data['degenerate_ids'])){
+            $data['degenerate_list'] = json_decode($data['degenerate_list'], true);
+            foreach ($data['degenerate_list'] as $key=>$value){
+
+                $evolution = model('Digimon')->where(['id'=>$value['id']])->field('evolution_ids, evolution_list')->find()->toArray();
+
+                $evolution['evolution_list'] = json_decode($evolution['evolution_list'], true);
+                $evolution['evolution_list'][] = ['id'=>$res, 'name'=>$data['name']];
+                $evolution['evolution_list'] = json_encode($evolution['evolution_list'],JSON_UNESCAPED_UNICODE);
+
+                if(!empty($evolution['evolution_ids'])){
+                    $evolution['evolution_ids'] = explode(",", $evolution['evolution_ids']);
+                }
+
+                $evolution['evolution_ids'][] = $res;
+                $evolution['evolution_ids'] = implode(",", $evolution['evolution_ids']);
+
+                model('Digimon')->save($evolution, ['id'=>$value['id']]);
+            }
+        }
+
         if(!empty($res)){
             return $this->success('添加成功');
+        }else{
+            return $this->error('添加失败');
         }
     }
 
